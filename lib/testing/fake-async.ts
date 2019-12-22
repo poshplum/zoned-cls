@@ -52,7 +52,7 @@ Zone.__load_patch('fakeasync', (global: any, Zone: ZoneType, api: _ZonePrivate) 
    */
   function fakeAsync(fn: Function): (...args: any[]) => any {
     // Not using an arrow function to preserve context passed from call site
-    return function(...args: any[]) {
+    return function(this: unknown, ...args: any[]) {
       const proxyZoneSpec = ProxyZoneSpec.assertPresent();
       if (Zone.current.get('FakeAsyncTestZoneSpec')) {
         throw new Error('fakeAsync() calls can not be nested');
@@ -117,9 +117,7 @@ Zone.__load_patch('fakeasync', (global: any, Zone: ZoneType, api: _ZonePrivate) 
    *
    * @experimental
    */
-  function tick(millis: number = 0): void {
-    _getFakeAsyncZoneSpec().tick(millis);
-  }
+  function tick(millis: number = 0): void { _getFakeAsyncZoneSpec().tick(millis); }
 
   /**
    * Simulates the asynchronous passage of time for the timers in the fakeAsync zone by
@@ -131,9 +129,7 @@ Zone.__load_patch('fakeasync', (global: any, Zone: ZoneType, api: _ZonePrivate) 
    *
    * @experimental
    */
-  function flush(maxTurns?: number): number {
-    return _getFakeAsyncZoneSpec().flush(maxTurns);
-  }
+  function flush(maxTurns?: number): number { return _getFakeAsyncZoneSpec().flush(maxTurns); }
 
   /**
    * Discard all remaining periodic tasks.
@@ -151,9 +147,7 @@ Zone.__load_patch('fakeasync', (global: any, Zone: ZoneType, api: _ZonePrivate) 
    *
    * @experimental
    */
-  function flushMicrotasks(): void {
-    _getFakeAsyncZoneSpec().flushMicrotasks();
-  }
-  (Zone as any)[api.symbol('fakeAsyncTest')] =
-      {resetFakeAsyncZone, flushMicrotasks, discardPeriodicTasks, tick, flush, fakeAsync};
+  function flushMicrotasks(): void { _getFakeAsyncZoneSpec().flushMicrotasks(); }
+  (Zone as any)[api.symbol('fakeAsyncTest')] = {
+      resetFakeAsyncZone, flushMicrotasks, discardPeriodicTasks, tick, flush, fakeAsync};
 });

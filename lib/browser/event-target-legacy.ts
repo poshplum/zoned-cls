@@ -8,7 +8,7 @@
 
 export function eventTargetLegacyPatch(_global: any, api: _ZonePrivate) {
   const {eventNames, globalSources, zoneSymbolEventNames, TRUE_STR, FALSE_STR, ZONE_SYMBOL_PREFIX} =
-      api.getGlobalObjects()!;
+      api.getGlobalObjects() !;
   const WTF_ISSUE_555 =
       'Anchor,Area,Audio,BR,Base,BaseFont,Body,Button,Canvas,Content,DList,Directory,Div,Embed,FieldSet,Font,Form,Frame,FrameSet,HR,Head,Heading,Html,IFrame,Image,Input,Keygen,LI,Label,Legend,Link,Map,Marquee,Media,Menu,Meta,Meter,Mod,OList,Object,OptGroup,Option,Output,Paragraph,Pre,Progress,Quote,Script,Select,Source,Span,Style,TableCaption,TableCell,TableCol,Table,TableRow,TableSection,TextArea,Title,Track,UList,Unknown,Video';
   const NO_EVENT_TARGET =
@@ -39,6 +39,18 @@ export function eventTargetLegacyPatch(_global: any, api: _ZonePrivate) {
   const FUNCTION_WRAPPER = '[object FunctionWrapper]';
   const BROWSER_TOOLS = 'function __BROWSERTOOLS_CONSOLE_SAFEFUNC() { [native code] }';
 
+  const pointerEventsMap: {[key: string]: string} = {
+    'MSPointerCancel': 'pointercancel',
+    'MSPointerDown': 'pointerdown',
+    'MSPointerEnter': 'pointerenter',
+    'MSPointerHover': 'pointerhover',
+    'MSPointerLeave': 'pointerleave',
+    'MSPointerMove': 'pointermove',
+    'MSPointerOut': 'pointerout',
+    'MSPointerOver': 'pointerover',
+    'MSPointerUp': 'pointerup'
+  };
+
   //  predefine all __zone_symbol__ + eventName + true/false string
   for (let i = 0; i < eventNames.length; i++) {
     const eventName = eventNames[i];
@@ -52,7 +64,7 @@ export function eventTargetLegacyPatch(_global: any, api: _ZonePrivate) {
   }
 
   //  predefine all task.source string
-  for (let i = 0; i < WTF_ISSUE_555.length; i++) {
+  for (let i = 0; i < WTF_ISSUE_555_ARRAY.length; i++) {
     const target: any = WTF_ISSUE_555_ARRAY[i];
     const targets: any = globalSources[target] = {};
     for (let j = 0; j < eventNames.length; j++) {
@@ -100,7 +112,13 @@ export function eventTargetLegacyPatch(_global: any, api: _ZonePrivate) {
   }
   // vh is validateHandler to check event handler
   // is valid or not(for security check)
-  api.patchEventTarget(_global, apiTypes, {vh: checkIEAndCrossContext});
+  api.patchEventTarget(_global, apiTypes, {
+    vh: checkIEAndCrossContext,
+    transferEventName: (eventName: string) => {
+      const pointerEventName = pointerEventsMap[eventName];
+      return pointerEventName || eventName;
+    }
+  });
   (Zone as any)[api.symbol('patchEventTarget')] = !!_global[EVENT_TARGET];
   return true;
 }

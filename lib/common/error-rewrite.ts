@@ -53,7 +53,7 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
   global['Error'] = ZoneAwareError;
   const stackRewrite = 'stackRewrite';
 
-  type BlackListedStackFramesPolicy = 'default'|'disable'|'lazy';
+  type BlackListedStackFramesPolicy = 'default' | 'disable' | 'lazy';
   const blackListedStackFramesPolicy: BlackListedStackFramesPolicy =
       global['__Zone_Error_BlacklistedStackFrames_policy'] || 'default';
 
@@ -75,7 +75,7 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
   }
 
   function buildZoneAwareStackFrames(
-      originalStack: string, zoneFrame: _ZoneFrame|ZoneFrameName|null, isZoneFrame = true) {
+      originalStack: string, zoneFrame: _ZoneFrame | ZoneFrameName | null, isZoneFrame = true) {
     let frames: string[] = originalStack.split('\n');
     let i = 0;
     // Find the first frame
@@ -115,7 +115,7 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
    * This is ZoneAwareError which processes the stack frame and cleans up extra frames as well as
    * adds zone information to it.
    */
-  function ZoneAwareError(): Error {
+  function ZoneAwareError(this: unknown | typeof NativeError): Error {
     // We always have to return native error otherwise the browser console will not work.
     let error: Error = NativeError.apply(this, arguments);
     // Save original stack trace
@@ -190,12 +190,8 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
     nativeErrorProperties.forEach(prop => {
       if (specialPropertyNames.filter(sp => sp === prop).length === 0) {
         Object.defineProperty(ZoneAwareError, prop, {
-          get: function() {
-            return NativeError[prop];
-          },
-          set: function(value) {
-            NativeError[prop] = value;
-          }
+          get: function() { return NativeError[prop]; },
+          set: function(value) { NativeError[prop] = value; }
         });
       }
     });
@@ -207,12 +203,8 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
 
     // make sure that ZoneAwareError has the same property which forwards to NativeError.
     Object.defineProperty(ZoneAwareError, 'stackTraceLimit', {
-      get: function() {
-        return NativeError.stackTraceLimit;
-      },
-      set: function(value) {
-        return NativeError.stackTraceLimit = value;
-      }
+      get: function() { return NativeError.stackTraceLimit; },
+      set: function(value) { return NativeError.stackTraceLimit = value; }
     });
   }
 
@@ -228,9 +220,7 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
 
   const ZONE_CAPTURESTACKTRACE = 'zoneCaptureStackTrace';
   Object.defineProperty(ZoneAwareError, 'prepareStackTrace', {
-    get: function() {
-      return NativeError.prepareStackTrace;
-    },
+    get: function() { return NativeError.prepareStackTrace; },
     set: function(value) {
       if (!value || typeof value !== 'function') {
         return NativeError.prepareStackTrace = value;
@@ -341,8 +331,9 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
   // we need to detect all zone related frames, it will
   // exceed default stackTraceLimit, so we set it to
   // larger number here, and restore it after detect finish.
-  const originalStackTraceLimit = Error.stackTraceLimit;
-  Error.stackTraceLimit = 100;
+  // We cast through any so we don't need to depend on nodejs typings.
+  const originalStackTraceLimit = (Error as any).stackTraceLimit;
+  (Error as any).stackTraceLimit = 100;
   // we schedule event/micro/macro task, and invoke them
   // when onSchedule, so we can get all stack traces for
   // all kinds of tasks with one error thrown.
@@ -356,21 +347,13 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
                 blacklistedStackFramesSymbol,
                 () => {
                   childDetectZone.scheduleMicroTask(
-                      blacklistedStackFramesSymbol,
-                      () => {
-                        throw new Error();
-                      },
-                      undefined,
+                      blacklistedStackFramesSymbol, () => { throw new Error(); }, undefined,
                       (t: Task) => {
                         (t as any)._transitionTo = fakeTransitionTo;
                         t.invoke();
                       });
                   childDetectZone.scheduleMicroTask(
-                      blacklistedStackFramesSymbol,
-                      () => {
-                        throw Error();
-                      },
-                      undefined,
+                      blacklistedStackFramesSymbol, () => { throw Error(); }, undefined,
                       (t: Task) => {
                         (t as any)._transitionTo = fakeTransitionTo;
                         t.invoke();
@@ -392,5 +375,5 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
     });
   });
 
-  Error.stackTraceLimit = originalStackTraceLimit;
+  (Error as any).stackTraceLimit = originalStackTraceLimit;
 });

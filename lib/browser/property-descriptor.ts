@@ -10,7 +10,7 @@
  * @suppress {globalThis}
  */
 
-import {isBrowser, isIE, isMix, isNode, ObjectGetPrototypeOf, patchOnProperties} from '../common/utils';
+import {ObjectGetPrototypeOf, isBrowser, isIE, isMix, isNode, patchOnProperties} from '../common/utils';
 
 const globalEventHandlersEventNames = [
   'abort',
@@ -144,7 +144,7 @@ const windowEventNames = [
   'unhandledrejection',
   'unload',
   'userproximity',
-  'vrdisplyconnected',
+  'vrdisplayconnected',
   'vrdisplaydisconnected',
   'vrdisplaypresentchange'
 ];
