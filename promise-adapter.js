@@ -1,4 +1,4 @@
-require('./dist/zone-node.js');
+require('./dist/zoned-cls-node.js');
 Zone[Zone.__symbol__('ignoreConsoleErrorUncaughtError')] = true;
 module.exports.deferred = function() {
   const p = {};

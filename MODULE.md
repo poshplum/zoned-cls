@@ -1,8 +1,15 @@
 # Modules
 
-Starting from zone.js v0.8.9, you can choose which web API modules you want to patch as to reduce overhead introduced by the patching of these modules. For example, 
-the below samples show how to disable some modules. You just need to define a few global variables 
-before loading zone.js.
+> Starting from zone.js v0.8.9, you can choose which web API modules you want to patch as to reduce overhead introduced by the patching of these modules. For example, 
+> the below samples show how to disable some modules. You just need to define a few global variables 
+> before loading zone.js.
+
+This is generally true of zoned-cls as well.  The remainder of this document 
+should generally hold, but is included without change and without guarantee
+and without quoting it as was done above.
+
+--- original content follows ---
+ 
 
 ```
   <script>

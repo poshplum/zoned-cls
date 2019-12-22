@@ -7,7 +7,7 @@
  */
 const events = require('events');
 const EventEmitter = events.EventEmitter;
-require('../../dist/zone-node');
+require('../../dist/zoned-cls-node');
 
 const emitters = [];
 const callbacks = [];

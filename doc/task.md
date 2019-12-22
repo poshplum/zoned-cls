@@ -6,7 +6,7 @@ We handle several kinds of tasks in zone.js,
 - MicroTask
 - EventTask
 
-For details, please refer to [here](../dist/zone.js.d.ts)
+For details, please refer to [here](../dist/zoned-cls.d.ts)
 
 This document will explain the lifecycle (state-transition) of different types of tasks and also the triggering of various zonespec's callback during that cycle.
 

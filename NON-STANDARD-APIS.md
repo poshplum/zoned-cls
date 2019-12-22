@@ -1,9 +1,15 @@
 # Zone.js's support for non standard apis
 
-Zone.js patched most standard APIs such as DOM event listeners, XMLHttpRequest in Browser, EventEmitter and fs API in Node.js so they can be in zone.
-  
-But there are still a lot of non standard APIs that are not patched by default, such as MediaQuery, Notification, 
- WebAudio and so on. We are adding support to those APIs, and our progress is updated here.
+> Zone.js patched most standard APIs such as DOM event listeners, XMLHttpRequest in Browser, EventEmitter and fs API in Node.js so they can be in zone.
+>  
+> But there are still a lot of non standard APIs that are not patched by default, such as MediaQuery, Notification, 
+> WebAudio and so on. We are adding support to those APIs, and our progress is updated here.
+ 
+zoned-cls doesn't change any of that.  We also left the remainder of 
+this document more or less unchanged.  Please apply a grain of salt 
+and reasonable thought to this material before trying to apply the
+guidance to zoned-cls (e.g. s/zone.js/zoned-cls/ and don't expect 
+Angular to work out of the box if you drop this module in).
  
 ## Currently supported non standard Web APIs 
 

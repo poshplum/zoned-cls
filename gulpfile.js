@@ -114,89 +114,89 @@ gulp.task('compile-esm-node', function(cb) {
   tsc('tsconfig-esm-node.json', cb);
 });
 
-gulp.task('build/zone.js.d.ts', ['compile-esm'], function() {
-  return gulp.src('./build-esm/lib/zone.d.ts')
-      .pipe(rename('zone.js.d.ts'))
+gulp.task('build/zoned-cls.d.ts', ['compile-esm'], function() {
+  return gulp.src('./build-esm/lib/zoned-cls.d.ts')
+      .pipe(rename('zoned-cls.d.ts'))
       .pipe(gulp.dest('./dist'));
 });
 
 // Zone for Node.js environment.
-gulp.task('build/zone-node.js', ['compile-esm-node'], function(cb) {
-  return generateScript('./lib/node/rollup-main.ts', 'zone-node.js', false, cb);
+gulp.task('build/zoned-cls-node.js', ['compile-esm-node'], function(cb) {
+  return generateScript('./lib/node/rollup-main.ts', 'zoned-cls-node.js', false, cb);
 });
 
 // Zone for the browser.
-gulp.task('build/zone.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/browser/rollup-legacy-main.ts', 'zone.js', false, cb);
+gulp.task('build/zoned-cls.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/browser/rollup-legacy-main.ts', 'zoned-cls.js', false, cb);
 });
 
-gulp.task('build/zone.min.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/browser/rollup-legacy-main.ts', 'zone.min.js', true, cb);
+gulp.task('build/zoned-cls.min.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/browser/rollup-legacy-main.ts', 'zoned-cls.min.js', true, cb);
 });
 
 // Zone for the evergreen browser.
-gulp.task('build/zone-evergreen.js', ['compile-esm-2015'], function(cb) {
-  return generateScript('./lib/browser/rollup-main.ts', 'zone-evergreen.js', false, cb, 'es', './build-esm-2015/');
+gulp.task('build/zoned-cls-evergreen.js', ['compile-esm-2015'], function(cb) {
+  return generateScript('./lib/browser/rollup-main.ts', 'zoned-cls-evergreen.js', false, cb, 'es', './build-esm-2015/');
 });
 
-gulp.task('build/zone-evergreen.min.js', ['compile-esm-2015'], function(cb) {
-  return generateScript('./lib/browser/rollup-main.ts', 'zone-evergreen.min.js', true, cb, 'es', './build-esm-2015/');
+gulp.task('build/zoned-cls-evergreen.min.js', ['compile-esm-2015'], function(cb) {
+  return generateScript('./lib/browser/rollup-main.ts', 'zoned-cls-evergreen.min.js', true, cb, 'es', './build-esm-2015/');
 });
 
 // Zone legacy patch for the legacy browser.
-gulp.task('build/zone-legacy.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/browser/browser-legacy.ts', 'zone-legacy.js', false, cb);
+gulp.task('build/zoned-cls-legacy.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/browser/browser-legacy.ts', 'zoned-cls-legacy.js', false, cb);
 });
 
-gulp.task('build/zone-legacy.min.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/browser/browser-legacy.ts', 'zone-legacy.min.js', true, cb);
+gulp.task('build/zoned-cls-legacy.min.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/browser/browser-legacy.ts', 'zoned-cls-legacy.min.js', true, cb);
 });
 
 // Zone test bundle for the browser.
-gulp.task('build/zone-testing-bundle.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/browser/rollup-legacy-test-main.ts', 'zone-testing-bundle.js', false, cb);
+gulp.task('build/zoned-cls-testing-bundle.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/browser/rollup-legacy-test-main.ts', 'zoned-cls-testing-bundle.js', false, cb);
 });
 
 // Zone test bundle for the evergreen browser.
-gulp.task('build/zone-evergreen-testing-bundle.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/browser/rollup-test-main.ts', 'zone-evergreen-testing-bundle.js', false, cb);
+gulp.task('build/zoned-cls-evergreen-testing-bundle.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/browser/rollup-test-main.ts', 'zoned-cls-evergreen-testing-bundle.js', false, cb);
 });
 
 // Zone test bundle for node.
-gulp.task('build/zone-testing-node-bundle.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/node/rollup-test-main.ts', 'zone-testing-node-bundle.js', false, cb);
+gulp.task('build/zoned-cls-testing-node-bundle.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/node/rollup-test-main.ts', 'zoned-cls-testing-node-bundle.js', false, cb);
 });
 
 // Zone test related files for the browser.
-gulp.task('build/zone-testing.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/testing/zone-testing.ts', 'zone-testing.js', false, cb);
+gulp.task('build/zoned-cls-testing.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/testing/zoned-cls-testing.ts', 'zoned-cls-testing.js', false, cb);
 });
 
 // Zone for electron/nw environment.
-gulp.task('build/zone-mix.js', ['compile-esm-node'], function(cb) {
-  return generateScript('./lib/mix/rollup-mix.ts', 'zone-mix.js', false, cb);
+gulp.task('build/zoned-cls-mix.js', ['compile-esm-node'], function(cb) {
+  return generateScript('./lib/mix/rollup-mix.ts', 'zoned-cls-mix.js', false, cb);
 });
 
 
 
-gulp.task('build/zone-patch-canvas.js', ['compile-esm'], function(cb) {
+gulp.task('build/zoned-cls-patch-canvas.js', ['compile-esm'], function(cb) {
   return generateScript(
-    './lib/browser/canvas.ts', 'zone-patch-canvas.js', false, cb);
+    './lib/browser/canvas.ts', 'zoned-cls-patch-canvas.js', false, cb);
 });
 
-gulp.task('build/zone-patch-canvas.min.js', ['compile-esm'], function(cb) {
+gulp.task('build/zoned-cls-patch-canvas.min.js', ['compile-esm'], function(cb) {
   return generateScript(
-    './lib/browser/canvas.ts', 'zone-patch-canvas.min.js', true, cb);
+    './lib/browser/canvas.ts', 'zoned-cls-patch-canvas.min.js', true, cb);
 });
 
-gulp.task('build/zone-patch-fetch.js', ['compile-esm'], function(cb) {
+gulp.task('build/zoned-cls-patch-fetch.js', ['compile-esm'], function(cb) {
   return generateScript(
-    './lib/common/fetch.ts', 'zone-patch-fetch.js', false, cb);
+    './lib/common/fetch.ts', 'zoned-cls-patch-fetch.js', false, cb);
 });
 
-gulp.task('build/zone-patch-fetch.min.js', ['compile-esm'], function(cb) {
+gulp.task('build/zoned-cls-patch-fetch.min.js', ['compile-esm'], function(cb) {
   return generateScript(
-    './lib/common/fetch.ts', 'zone-patch-fetch.min.js', true, cb);
+    './lib/common/fetch.ts', 'zoned-cls-patch-fetch.min.js', true, cb);
 });
 
 
@@ -239,74 +239,74 @@ gulp.task('build/webapis-shadydom.min.js', ['compile-esm'], function(cb) {
   return generateScript('./lib/browser/shadydom.ts', 'webapis-shadydom.min.js', true, cb);
 });
 
-gulp.task('build/zone-patch-cordova.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/extra/cordova.ts', 'zone-patch-cordova.js', false, cb);
+gulp.task('build/zoned-cls-patch-cordova.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/extra/cordova.ts', 'zoned-cls-patch-cordova.js', false, cb);
 });
 
-gulp.task('build/zone-patch-cordova.min.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/extra/cordova.ts', 'zone-patch-cordova.min.js', true, cb);
+gulp.task('build/zoned-cls-patch-cordova.min.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/extra/cordova.ts', 'zoned-cls-patch-cordova.min.js', true, cb);
 });
 
-gulp.task('build/zone-patch-electron.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/extra/electron.ts', 'zone-patch-electron.js', false, cb);
+gulp.task('build/zoned-cls-patch-electron.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/extra/electron.ts', 'zoned-cls-patch-electron.js', false, cb);
 });
 
-gulp.task('build/zone-patch-electron.min.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/extra/electron.ts', 'zone-patch-electron.min.js', true, cb);
+gulp.task('build/zoned-cls-patch-electron.min.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/extra/electron.ts', 'zoned-cls-patch-electron.min.js', true, cb);
 });
 
-gulp.task('build/zone-patch-user-media.js', ['compile-esm'], function(cb) {
+gulp.task('build/zoned-cls-patch-user-media.js', ['compile-esm'], function(cb) {
   return generateScript(
-      './lib/browser/webapis-user-media.ts', 'zone-patch-user-media.js', false, cb);
+      './lib/browser/webapis-user-media.ts', 'zoned-cls-patch-user-media.js', false, cb);
 });
 
-gulp.task('build/zone-patch-user-media.min.js', ['compile-esm'], function(cb) {
+gulp.task('build/zoned-cls-patch-user-media.min.js', ['compile-esm'], function(cb) {
   return generateScript(
-      './lib/browser/webapis-user-media.ts', 'zone-patch-user-media.min.js', true, cb);
+      './lib/browser/webapis-user-media.ts', 'zoned-cls-patch-user-media.min.js', true, cb);
 });
 
-gulp.task('build/zone-patch-socket-io.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/extra/socket-io.ts', 'zone-patch-socket-io.js', false, cb);
+gulp.task('build/zoned-cls-patch-socket-io.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/extra/socket-io.ts', 'zoned-cls-patch-socket-io.js', false, cb);
 });
 
-gulp.task('build/zone-patch-socket-io.min.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/extra/socket-io.ts', 'zone-patch-socket-io.min.js', true, cb);
+gulp.task('build/zoned-cls-patch-socket-io.min.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/extra/socket-io.ts', 'zoned-cls-patch-socket-io.min.js', true, cb);
 });
 
-gulp.task('build/zone-patch-promise-testing.js', ['compile-esm'], function(cb) {
+gulp.task('build/zoned-cls-patch-promise-testing.js', ['compile-esm'], function(cb) {
   return generateScript(
-      './lib/testing/promise-testing.ts', 'zone-patch-promise-test.js', false, cb);
+      './lib/testing/promise-testing.ts', 'zoned-cls-patch-promise-test.js', false, cb);
 });
 
-gulp.task('build/zone-patch-promise-testing.min.js', ['compile-esm'], function(cb) {
+gulp.task('build/zoned-cls-patch-promise-testing.min.js', ['compile-esm'], function(cb) {
   return generateScript(
-      './lib/testing/promise-testing.ts', 'zone-patch-promise-test.min.js', true, cb);
+      './lib/testing/promise-testing.ts', 'zoned-cls-patch-promise-test.min.js', true, cb);
 });
 
-gulp.task('build/zone-patch-resize-observer.js', ['compile-esm'], function(cb) {
+gulp.task('build/zoned-cls-patch-resize-observer.js', ['compile-esm'], function(cb) {
   return generateScript(
-      './lib/browser/webapis-resize-observer.ts', 'zone-patch-resize-observer.js', false, cb);
+      './lib/browser/webapis-resize-observer.ts', 'zoned-cls-patch-resize-observer.js', false, cb);
 });
 
-gulp.task('build/zone-patch-resize-observer.min.js', ['compile-esm'], function(cb) {
+gulp.task('build/zoned-cls-patch-resize-observer.min.js', ['compile-esm'], function(cb) {
   return generateScript(
-      './lib/browser/webapis-resize-observer.ts', 'zone-patch-resize-observer.min.js', true, cb);
+      './lib/browser/webapis-resize-observer.ts', 'zoned-cls-patch-resize-observer.min.js', true, cb);
 });
 
 gulp.task('build/bluebird.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/extra/bluebird.ts', 'zone-bluebird.js', false, cb);
+  return generateScript('./lib/extra/bluebird.ts', 'zoned-cls-bluebird.js', false, cb);
 });
 
 gulp.task('build/bluebird.min.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/extra/bluebird.ts', 'zone-bluebird.min.js', true, cb);
+  return generateScript('./lib/extra/bluebird.ts', 'zoned-cls-bluebird.min.js', true, cb);
 });
 
-gulp.task('build/zone-patch-jsonp.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/extra/jsonp.ts', 'zone-patch-jsonp.js', false, cb);
+gulp.task('build/zoned-cls-patch-jsonp.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/extra/jsonp.ts', 'zoned-cls-patch-jsonp.js', false, cb);
 });
 
-gulp.task('build/zone-patch-jsonp.min.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/extra/jsonp.ts', 'zone-patch-jsonp.min.js', true, cb);
+gulp.task('build/zoned-cls-patch-jsonp.min.js', ['compile-esm'], function(cb) {
+  return generateScript('./lib/extra/jsonp.ts', 'zoned-cls-patch-jsonp.min.js', true, cb);
 });
 
 gulp.task('build/jasmine-patch.js', ['compile-esm'], function(cb) {
@@ -335,11 +335,11 @@ gulp.task('build/long-stack-trace-zone.min.js', ['compile-esm'], function(cb) {
       './lib/zone-spec/long-stack-trace.ts', 'long-stack-trace-zone.min.js', true, cb);
 });
 
-gulp.task('build/proxy-zone.js', ['compile-esm'], function(cb) {
+gulp.task('build/proxy-zoned-cls.js', ['compile-esm'], function(cb) {
   return generateScript('./lib/zone-spec/proxy.ts', 'proxy.js', false, cb);
 });
 
-gulp.task('build/proxy-zone.min.js', ['compile-esm'], function(cb) {
+gulp.task('build/proxy-zoned-cls.min.js', ['compile-esm'], function(cb) {
   return generateScript('./lib/zone-spec/proxy.ts', 'proxy.min.js', true, cb);
 });
 
@@ -368,42 +368,40 @@ gulp.task('build/rxjs.js', ['compile-esm'], function(cb) {
 });
 
 gulp.task('build/rxjs.min.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/rxjs/rxjs.ts', 'zone-patch-rxjs.min.js', true, cb);
+  return generateScript('./lib/rxjs/rxjs.ts', 'zoned-cls-patch-rxjs.min.js', true, cb);
 });
 
 gulp.task('build/rxjs-fake-async.js', ['compile-esm'], function(cb) {
   return generateScript(
-      './lib/rxjs/rxjs-fake-async.ts', 'zone-patch-rxjs-fake-async.js', false, cb);
+      './lib/rxjs/rxjs-fake-async.ts', 'zoned-cls-patch-rxjs-fake-async.js', false, cb);
 });
 
 gulp.task('build/rxjs-fake-async.min.js', ['compile-esm'], function(cb) {
   return generateScript(
-      './lib/rxjs/rxjs-fake-async.ts', 'zone-patch-rxjs-fake-async.min.js', true, cb);
+      './lib/rxjs/rxjs-fake-async.ts', 'zoned-cls-patch-rxjs-fake-async.min.js', true, cb);
 });
 
 gulp.task('build/closure.js', function() {
-  return gulp.src('./lib/closure/zone_externs.js').pipe(gulp.dest('./dist'));
+  return gulp.src('./lib/closure/zoned-cls_externs.js').pipe(gulp.dest('./dist'));
 });
 
 gulp.task('build', [
-  'build/zone.js',
-  'build/zone.js.d.ts',
-  'build/zone.min.js',
-  'build/zone-evergreen.js',
-  'build/zone-evergreen.min.js',
-  'build/zone-legacy.js',
-  'build/zone-legacy.min.js',
-  'build/zone-testing.js',
-  'build/zone-testing-bundle.js',
-  'build/zone-evergreen-testing-bundle.js',
-  'build/zone-testing-node-bundle.js',
-  'build/zone-error.js',
-  'build/zone-error.min.js',
-  'build/zone-node.js',
-  'build/zone-patch-canvas.js',
-  'build/zone-patch-canvas.min.js',
-  'build/zone-patch-fetch.js',
-  'build/zone-patch-fetch.min.js',
+  'build/zoned-cls.js',
+  'build/zoned-cls.d.ts',
+  'build/zoned-cls.min.js',
+  'build/zoned-cls-evergreen.js',
+  'build/zoned-cls-evergreen.min.js',
+  'build/zoned-cls-legacy.js',
+  'build/zoned-cls-legacy.min.js',
+  'build/zoned-cls-testing.js',
+  'build/zoned-cls-testing-bundle.js',
+  'build/zoned-cls-evergreen-testing-bundle.js',
+  'build/zoned-cls-testing-node-bundle.js',
+  'build/zoned-cls-node.js',
+  'build/zoned-cls-patch-canvas.js',
+  'build/zoned-cls-patch-canvas.min.js',
+  'build/zoned-cls-patch-fetch.js',
+  'build/zoned-cls-patch-fetch.min.js',
   'build/webapis-media-query.js',
   'build/webapis-media-query.min.js',
   'build/webapis-notification.js',
@@ -412,31 +410,31 @@ gulp.task('build', [
   'build/webapis-rtc-peer-connection.min.js',
   'build/webapis-shadydom.js',
   'build/webapis-shadydom.min.js',
-  'build/zone-patch-cordova.js',
-  'build/zone-patch-cordova.min.js',
-  'build/zone-patch-electron.js',
-  'build/zone-patch-electron.min.js',
-  'build/zone-patch-user-media.js',
-  'build/zone-patch-user-media.min.js',
-  'build/zone-patch-socket-io.js',
-  'build/zone-patch-socket-io.min.js',
-  'build/zone-patch-promise-testing.js',
-  'build/zone-patch-promise-testing.min.js',
-  'build/zone-patch-resize-observer.js',
-  'build/zone-patch-resize-observer.min.js',
-  'build/zone-mix.js',
+  'build/zoned-cls-patch-cordova.js',
+  'build/zoned-cls-patch-cordova.min.js',
+  'build/zoned-cls-patch-electron.js',
+  'build/zoned-cls-patch-electron.min.js',
+  'build/zoned-cls-patch-user-media.js',
+  'build/zoned-cls-patch-user-media.min.js',
+  'build/zoned-cls-patch-socket-io.js',
+  'build/zoned-cls-patch-socket-io.min.js',
+  'build/zoned-cls-patch-promise-testing.js',
+  'build/zoned-cls-patch-promise-testing.min.js',
+  'build/zoned-cls-patch-resize-observer.js',
+  'build/zoned-cls-patch-resize-observer.min.js',
+  'build/zoned-cls-mix.js',
   'build/bluebird.js',
   'build/bluebird.min.js',
-  'build/zone-patch-jsonp.js',
-  'build/zone-patch-jsonp.min.js',
+  'build/zoned-cls-patch-jsonp.js',
+  'build/zoned-cls-patch-jsonp.min.js',
   'build/jasmine-patch.js',
   'build/jasmine-patch.min.js',
   'build/mocha-patch.js',
   'build/mocha-patch.min.js',
   'build/long-stack-trace-zone.js',
   'build/long-stack-trace-zone.min.js',
-  'build/proxy-zone.js',
-  'build/proxy-zone.min.js',
+  'build/proxy-zoned-cls.js',
+  'build/proxy-zoned-cls.min.js',
   'build/wtf.js',
   'build/wtf.min.js',
   'build/async-test.js',
@@ -452,7 +450,7 @@ gulp.task('build', [
 function nodeTest(specFiles, cb) {
   require('./build/test/node-env-setup');
 
-  // load zone-node here to let jasmine be able to use jasmine.clock().install()
+  // load zoned-cls-node here to let jasmine be able to use jasmine.clock().install()
   // without throw error
   require('./build/lib/node/rollup-main');
   var args = process.argv;
@@ -550,7 +548,7 @@ gulp.task('changelog', () => {
 });
 
 // run promise aplus test
-gulp.task('promisetest', ['build/zone-node.js'], (cb) => {
+gulp.task('promisetest', ['build/zoned-cls-node.js'], (cb) => {
   const promisesAplusTests = require('promises-aplus-tests');
   const adapter = require('./promise-adapter');
   promisesAplusTests(adapter, {reporter: 'dot'}, function(err) {

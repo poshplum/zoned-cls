@@ -1,11 +1,11 @@
 {
-  "name": "zone.js",
-  "version": "0.9.1",
-  "description": "Zones for JavaScript",
-  "main": "dist/zone-node.js",
-  "browser": "dist/zone.js",
-  "unpkg": "dist/zone.js",
-  "typings": "dist/zone.js.d.ts",
+  "name": "zoned-cls",
+  "version": "0.11.0",
+  "description": "Zoned continuation-local storage for browser and node",
+  "main": "dist/zoned-cls-node.js",
+  "browser": "dist/zoned-cls.js",
+  "unpkg": "dist/zoned-cls.js",
+  "typings": "dist/zoned-cls.d.ts",
   "files": [
     "lib",
     "dist"
@@ -15,13 +15,8 @@
     "test": "test"
   },
   "scripts": {
-    "build:bazel": "bazel build //:npm_package",
-    "build:bazel:test": "bazel run //:test_npm_package",
-    "build:gulp": "gulp build",
-    "// 1": "Run both builds and make a directory to extract the current npm package",
-    "prebuild:compare": "yarn build:gulp && yarn build:bazel && rm -rf build/current-pkg && mkdir -p build/current-pkg",
-    "// 2": "This command assumes you have installed the meld tool to have graphical diff",
-    "build:compare": "yarn pack | xargs tar -xvz -C build/current-pkg -f && meld build/current-pkg/package build/bin/npm_package",
+    "build": "gulp build",
+    "package": "yarn pack && cd .unpacked && rm -rf packaged && tar -xvzf ../zoned-cls*.tgz && cd ..",
     "changelog": "gulp changelog",
     "ci": "yarn run lint && yarn run format && yarn run promisetest && yarn run test:single && yarn run test-node",
     "closure:test": "scripts/closure/closure_compiler.sh",
@@ -62,18 +57,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/angular/zone.js.git"
+    "url": "git://github.com/poshplum/zoned-cls.git"
   },
-  "author": "Brian Ford",
+  "author": "various including Brian Ford",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/angular/zone.js/issues"
+    "url": "https://github.com/poshplum/zoned-cls/issues"
   },
   "dependencies": {},
   "devDependencies": {
-    "@bazel/bazel": "^0.22.0",
     "@bazel/buildifier": "^0.22.0",
-    "@bazel/ibazel": "^0.9.1",
     "@bazel/jasmine": "^0.29.0",
     "@bazel/karma": "^0.28.0",
     "@bazel/typescript": "^0.28.0",

@@ -47,7 +47,7 @@ describe('Zone.js npm_package', () => {
     });
 
     it('should contain module resolution mappings', () => {
-      expect(shx.grep('"main":', packageJson)).toContain(`dist/zone-node.js`);
+      expect(shx.grep('"main":', packageJson)).toContain(`dist/zoned-cls-node.js`);
     });
   });
 
@@ -59,26 +59,26 @@ describe('Zone.js npm_package', () => {
       shx.cd('../');
     });
     describe('typescript support', () => {
-      it('should have an zone.js.d.ts file', () => {
-        expect(shx.cat('zone.js.d.ts')).toContain('declare const');
+      it('should have an d/zoned-cls.d.ts file', () => {
+        expect(shx.cat('zoned-cls.d.ts')).toContain('declare const');
       });
     });
 
     describe('closure', () => {
       it('should contain externs', () => {
-        expect(shx.cat('zone_externs.js')).toContain('Externs for zone.js');
+        expect(shx.cat('zoned-cls_externs.js')).toContain('Externs for zone.js');
       });
     });
 
     describe('es5', () => {
-      it('zone.js(es5) should not contain es6 spread code', () => {
-        expect(shx.cat('zone.js')).not.toContain('let value of values');
+      it('zoned-cls.js(es5) should not contain es6 spread code', () => {
+        expect(shx.cat('zoned-cls.js')).not.toContain('let value of values');
       });
     });
 
     describe('es2015', () => {
-      it('zone-evergreen.js(es2015) should contain es6 code', () => {
-        expect(shx.cat('zone-evergreen.js')).toContain('let value of values');
+      it('zoned-cls-evergreen.js(es2015) should contain es6 code', () => {
+        expect(shx.cat('zoned-cls-evergreen.js')).toContain('let value of values');
       });
     });
 
@@ -110,52 +110,52 @@ describe('Zone.js npm_package', () => {
           'webapis-shadydom.min.js',
           'wtf.js',
           'wtf.min.js',
-          'zone_externs.js',
-          'zone-bluebird.js',
-          'zone-bluebird.min.js',
-          'zone-error.js',
-          'zone-error.min.js',
-          'zone-evergreen.js',
-          'zone-evergreen.min.js',
-          'zone-evergreen-testing-bundle.js',
-          'zone-evergreen-testing-bundle.min.js',
-          'zone-legacy.js',
-          'zone-legacy.min.js',
-          'zone-mix.js',
-          'zone-mix.min.js',
-          'zone-node.js',
-          'zone-node.min.js',
+          'zoned-cls_externs.js',
+          'zoned-cls-bluebird.js',
+          'zoned-cls-bluebird.min.js',
+          'zoned-cls-error.js',
+          'zoned-cls-error.min.js',
+          'zoned-cls-evergreen.js',
+          'zoned-cls-evergreen.min.js',
+          'zoned-cls-evergreen-testing-bundle.js',
+          'zoned-cls-evergreen-testing-bundle.min.js',
+          'zoned-cls-legacy.js',
+          'zoned-cls-legacy.min.js',
+          'zoned-cls-mix.js',
+          'zoned-cls-mix.min.js',
+          'zoned-cls-node.js',
+          'zoned-cls-node.min.js',
           'zone-patch-canvas.js',
           'zone-patch-canvas.min.js',
-          'zone-patch-cordova.js',
-          'zone-patch-cordova.min.js',
-          'zone-patch-electron.js',
-          'zone-patch-electron.min.js',
-          'zone-patch-fetch.js',
-          'zone-patch-fetch.min.js',
-          'zone-patch-jsonp.js',
-          'zone-patch-jsonp.min.js',
-          'zone-patch-promise-test.js',
-          'zone-patch-promise-test.min.js',
-          'zone-patch-resize-observer.js',
-          'zone-patch-resize-observer.min.js',
-          'zone-patch-rxjs-fake-async.js',
-          'zone-patch-rxjs-fake-async.min.js',
-          'zone-patch-rxjs.js',
-          'zone-patch-rxjs.min.js',
-          'zone-patch-socket-io.js',
-          'zone-patch-socket-io.min.js',
-          'zone-patch-user-media.js',
-          'zone-patch-user-media.min.js',
-          'zone-testing-bundle.js',
-          'zone-testing-bundle.min.js',
-          'zone-testing-node-bundle.js',
-          'zone-testing-node-bundle.min.js',
-          'zone-testing.js',
-          'zone-testing.min.js',
-          'zone.js',
-          'zone.js.d.ts',
-          'zone.min.js',
+          'zoned-cls-patch-cordova.js',
+          'zoned-cls-patch-cordova.min.js',
+          'zoned-cls-patch-electron.js',
+          'zoned-cls-patch-electron.min.js',
+          'zoned-cls-patch-fetch.js',
+          'zoned-cls-patch-fetch.min.js',
+          'zoned-cls-patch-jsonp.js',
+          'zoned-cls-patch-jsonp.min.js',
+          'zoned-cls-patch-promise-test.js',
+          'zoned-cls-patch-promise-test.min.js',
+          'zoned-cls-patch-resize-observer.js',
+          'zoned-cls-patch-resize-observer.min.js',
+          'zoned-cls-patch-rxjs-fake-async.js',
+          'zoned-cls-patch-rxjs-fake-async.min.js',
+          'zoned-cls-patch-rxjs.js',
+          'zoned-cls-patch-rxjs.min.js',
+          'zoned-cls-patch-socket-io.js',
+          'zoned-cls-patch-socket-io.min.js',
+          'zoned-cls-patch-user-media.js',
+          'zoned-cls-patch-user-media.min.js',
+          'zoned-cls-testing-bundle.js',
+          'zoned-cls-testing-bundle.min.js',
+          'zoned-cls-testing-node-bundle.js',
+          'zoned-cls-testing-node-bundle.min.js',
+          'zoned-cls-testing.js',
+          'zoned-cls-testing.min.js',
+          'zoned-cls.js',
+          'zoned-cls.d.ts',
+          'zoned-cls.min.js',
         ].sort();
         expect(list.length).toBe(expected.length);
         for (let i = 0; i < list.length; i++) {

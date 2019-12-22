@@ -9,4 +9,4 @@
 import './rollup-main';
 
 // load test related files into bundle
-import '../testing/zone-testing';
+import '../testing/zoned-cls-testing';
