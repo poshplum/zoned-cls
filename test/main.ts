@@ -61,7 +61,6 @@ browserPatchedPromise.then(() => {
       '/base/build/test/test-env-setup-jasmine';
   // Setup test environment
   System.import(testFrameworkPatch).then(() => {
-    System.import('/base/build/lib/common/error-rewrite').then(() => {
       System.import(`/base/build/test/${entryPoint}`)
           .then(
               () => {
@@ -71,5 +70,4 @@ browserPatchedPromise.then(() => {
                 console.error(error.stack || error);
               });
     });
-  });
 });

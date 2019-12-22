@@ -29,7 +29,6 @@ import '../lib/zone-spec/fake-async-test';
 import '../lib/zone-spec/long-stack-trace';
 import '../lib/zone-spec/proxy';
 import '../lib/zone-spec/sync-test';
-import '../lib/zone-spec/task-tracking';
 import '../lib/zone-spec/wtf';
 import '../lib/rxjs/rxjs';
 

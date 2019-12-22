@@ -177,13 +177,7 @@ gulp.task('build/zone-mix.js', ['compile-esm-node'], function(cb) {
   return generateScript('./lib/mix/rollup-mix.ts', 'zone-mix.js', false, cb);
 });
 
-gulp.task('build/zone-error.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/common/error-rewrite.ts', 'zone-error.js', false, cb);
-});
 
-gulp.task('build/zone-error.min.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/common/error-rewrite.ts', 'zone-error.min.js', true, cb);
-});
 
 gulp.task('build/zone-patch-canvas.js', ['compile-esm'], function(cb) {
   return generateScript(
@@ -349,14 +343,6 @@ gulp.task('build/proxy-zone.min.js', ['compile-esm'], function(cb) {
   return generateScript('./lib/zone-spec/proxy.ts', 'proxy.min.js', true, cb);
 });
 
-gulp.task('build/task-tracking.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/zone-spec/task-tracking.ts', 'task-tracking.js', false, cb);
-});
-
-gulp.task('build/task-tracking.min.js', ['compile-esm'], function(cb) {
-  return generateScript('./lib/zone-spec/task-tracking.ts', 'task-tracking.min.js', true, cb);
-});
-
 gulp.task('build/wtf.js', ['compile-esm'], function(cb) {
   return generateScript('./lib/zone-spec/wtf.ts', 'wtf.js', false, cb);
 });
@@ -451,8 +437,6 @@ gulp.task('build', [
   'build/long-stack-trace-zone.min.js',
   'build/proxy-zone.js',
   'build/proxy-zone.min.js',
-  'build/task-tracking.js',
-  'build/task-tracking.min.js',
   'build/wtf.js',
   'build/wtf.min.js',
   'build/async-test.js',
@@ -510,17 +494,7 @@ gulp.task('test/bluebird', ['compile-node'], function(cb) {
   nodeTest(specFiles, cb);
 });
 
-gulp.task('test/node/disableerror', ['compile-node'], function(cb) {
-  process.env.errorpolicy = 'disable';
-  var specFiles = ['build/test/node_error_entry_point.js'];
-  nodeTest(specFiles, cb);
-});
 
-gulp.task('test/node/lazyerror', ['compile-node'], function(cb) {
-  process.env.errorpolicy = 'lazy';
-  var specFiles = ['build/test/node_error_entry_point.js'];
-  nodeTest(specFiles, cb);
-});
 
 // Check the coding standards and programming errors
 gulp.task('lint', () => {

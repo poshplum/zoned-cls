@@ -100,8 +100,6 @@ describe('Zone.js npm_package', () => {
           'proxy.min.js',
           'sync-test.js',
           'sync-test.min.js',
-          'task-tracking.js',
-          'task-tracking.min.js',
           'webapis-media-query.js',
           'webapis-media-query.min.js',
           'webapis-notification.js',

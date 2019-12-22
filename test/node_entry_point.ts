@@ -18,7 +18,6 @@ if (typeof global !== 'undefined' &&
 
 // Setup tests for Zone without microtask support
 import '../lib/testing/zone-testing';
-import '../lib/zone-spec/task-tracking';
 import '../lib/zone-spec/wtf';
 import '../lib/rxjs/rxjs';
 import '../lib/rxjs/rxjs-fake-async';

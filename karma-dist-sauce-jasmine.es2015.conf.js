@@ -19,7 +19,6 @@ module.exports = function (config) {
   config.files.push('dist/webapis-notification.js');
   config.files.push('dist/zone-patch-user-media.js');
   config.files.push('dist/zone-patch-resize-observer.js');
-  config.files.push('dist/task-tracking.js');
   config.files.push('dist/wtf.js');
   config.files.push('dist/zone-testing.js');
   config.files.push('build/test/test-env-setup-jasmine.js');

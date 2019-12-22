@@ -19,7 +19,6 @@ import '../lib/common/fetch';
 import '../lib/browser/webapis-user-media';
 import '../lib/browser/webapis-media-query';
 import '../lib/testing/zone-testing';
-import '../lib/zone-spec/task-tracking';
 import '../lib/zone-spec/wtf';
 import '../lib/extra/cordova';
 import '../lib/testing/promise-testing';

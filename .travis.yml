@@ -48,8 +48,8 @@ script:
   - node_modules/.bin/gulp test/node
   - node_modules/.bin/gulp test/node -no-patch-clock
   - node_modules/.bin/gulp test/bluebird
-  - node_modules/.bin/gulp test/node/disableerror
-  - node_modules/.bin/gulp test/node/lazyerror
+#  - node_modules/.bin/gulp test/node/disableerror
+#  - node_modules/.bin/gulp test/node/lazyerror
   - node simple-server.js 2>&1> server.log&
   - node ./test/webdriver/test.sauce.js
   - yarn add jasmine@3.0.0 jasmine-core@3.0.0 mocha@5.0.1
