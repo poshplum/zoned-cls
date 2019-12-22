@@ -69,7 +69,7 @@ Zone.__load_patch('bluebird', (global: any, Zone: ZoneType, api: _ZonePrivate) =
 
     Bluebird.onPossiblyUnhandledRejection(function(e: any, promise: any) {
       try {
-        Zone.current.runGuarded(() => {
+        Zone.current.run(() => {
           e.isHandledByZone = true;
           throw e;
         });

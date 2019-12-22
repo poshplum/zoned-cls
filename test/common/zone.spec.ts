@@ -22,19 +22,6 @@ describe('Zone', function() {
     });
 
 
-    it('should fire onError if a function run by a zone throws', function() {
-      const errorSpy = jasmine.createSpy('error');
-      const myZone = Zone.current.fork({name: 'spy', onHandleError: errorSpy});
-
-      expect(errorSpy).not.toHaveBeenCalled();
-
-      expect(function() {
-        myZone.runGuarded(throwError);
-      }).not.toThrow();
-
-      expect(errorSpy).toHaveBeenCalled();
-    });
-
     it('should send correct currentZone in hook method when in nested zone', function() {
       const zone = Zone.current;
       const zoneA = zone.fork({
@@ -392,25 +379,6 @@ describe('Zone', function() {
       }).not.toThrow();
     });
 
-    it('should call onHandleError callback when zoneSpec onHasTask throw error', () => {
-      const spy = jasmine.createSpy('error');
-      const hasTaskZone = Zone.current.fork({
-        name: 'hasTask',
-        onHasTask:
-            (delegate: ZoneDelegate, currentZone: Zone, targetZone: Zone,
-             hasTasState: HasTaskState) => {
-              throw new Error('onHasTask Error');
-            },
-        onHandleError:
-            (delegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, error: Error) => {
-              spy(error.message);
-              return delegate.handleError(targetZone, error);
-            }
-      });
-
-      const microTask = hasTaskZone.scheduleMicroTask('test', () => {}, undefined, () => {});
-      expect(spy).toHaveBeenCalledWith('onHasTask Error');
-    });
   });
 });
 

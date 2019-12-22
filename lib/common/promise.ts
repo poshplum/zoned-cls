@@ -44,7 +44,7 @@ Zone.__load_patch('ZoneAwarePromise', (global: any, Zone: ZoneType, api: _ZonePr
       while (_uncaughtPromiseErrors.length) {
         const uncaughtPromiseError: UncaughtPromiseError = _uncaughtPromiseErrors.shift() !;
         try {
-          uncaughtPromiseError.zone.runGuarded(() => { throw uncaughtPromiseError; });
+          uncaughtPromiseError.zone.run(() => { throw uncaughtPromiseError; });
         } catch (error) {
           handleUnhandledRejection(error);
         }

@@ -202,22 +202,6 @@ interface Zone {
   run<T>(callback: Function, applyThis?: any, applyArgs?: any[], source?: string): T;
 
   /**
-   * Invokes a function in a given zone and catches any exceptions.
-   *
-   * Any exceptions thrown will be forwarded to [Zone.HandleError].
-   *
-   * The invocation of `callback` can be intercepted by declaring [ZoneSpec.onInvoke]. The
-   * handling of exceptions can be intercepted by declaring [ZoneSpec.handleError].
-   *
-   * @param callback The function to invoke.
-   * @param applyThis
-   * @param applyArgs
-   * @param source A unique debug location of the API being invoked.
-   * @returns {any} Value from the `callback` function.
-   */
-  runGuarded<T>(callback: Function, applyThis?: any, applyArgs?: any[], source?: string): T;
-
-  /**
    * Execute the Task by restoring the [Zone.currentTask] in the Task's zone.
    *
    * @param task to run
@@ -533,12 +517,12 @@ interface ZoneDelegate {
   intercept(targetZone: Zone, callback: Function, source: string): Function;
   invoke(targetZone: Zone, callback: Function, applyThis?: any, applyArgs?: any[], source?: string):
       any;
-  handleError(targetZone: Zone, error: any): boolean;
   scheduleTask(targetZone: Zone, task: Task): Task;
   invokeTask(targetZone: Zone, task: Task, applyThis?: any, applyArgs?: any[]): any;
   cancelTask(targetZone: Zone, task: Task): any;
   hasTask(targetZone: Zone, isEmpty: HasTaskState): void;
 }
+
 
 type HasTaskState = {
   microTask: boolean; macroTask: boolean; eventTask: boolean; change: TaskType;
@@ -801,8 +785,9 @@ const Zone: ZoneType = (function(global: any) {
       }
       const _callback = this._zoneDelegate.intercept(this, callback, source);
       const zone: Zone = this;
+      //  return zone.run.bind(this, _callback); // -> after reordering source arg
       return function(this: unknown) {
-        return zone.runGuarded(_callback, this, <any>arguments, source);
+        return zone.run(_callback, this, <any>arguments, source);
       } as any as T;
     }
 
@@ -816,25 +801,6 @@ const Zone: ZoneType = (function(global: any) {
         _currentZoneFrame = _currentZoneFrame.parent !;
       }
     }
-
-    public runGuarded(callback: Function, applyThis?: any, applyArgs?: any[], source?: string): any;
-    public runGuarded<T>(
-        callback: (...args: any[]) => T, applyThis: any = null, applyArgs?: any[],
-        source?: string) {
-      _currentZoneFrame = {parent: _currentZoneFrame, zone: this};
-      try {
-        try {
-          return this._zoneDelegate.invoke(this, callback, applyThis, applyArgs, source);
-        } catch (error) {
-          if (this._zoneDelegate.handleError(this, error)) {
-            throw error;
-          }
-        }
-      } finally {
-        _currentZoneFrame = _currentZoneFrame.parent !;
-      }
-    }
-
 
     runTask(task: Task, applyThis?: any, applyArgs?: any): any {
       if (task.zone != this) {
@@ -860,13 +826,7 @@ const Zone: ZoneType = (function(global: any) {
         if (task.type == macroTask && task.data && !task.data.isPeriodic) {
           task.cancelFn = undefined;
         }
-        try {
-          return this._zoneDelegate.invokeTask(this, task, applyThis, applyArgs);
-        } catch (error) {
-          if (this._zoneDelegate.handleError(this, error)) {
-            throw error;
-          }
-        }
+        return this._zoneDelegate.invokeTask(this, task, applyThis, applyArgs);
       } finally {
         // if the task's state is notScheduled or unknown, then it has already been cancelled
         // we should not reset the state to scheduled
@@ -908,8 +868,6 @@ const Zone: ZoneType = (function(global: any) {
         // should set task's state to unknown when scheduleTask throw error
         // because the err may from reschedule, so the fromState maybe notScheduled
         (task as any as ZoneTask<any>)._transitionTo(unknown, scheduling, notScheduled);
-        // TODO: @JiaLiPassion, should we check the result from handleError?
-        this._zoneDelegate.handleError(this, err);
         throw err;
       }
       if ((task as any as ZoneTask<any>)._zoneDelegates === zoneDelegates) {
@@ -943,6 +901,7 @@ const Zone: ZoneType = (function(global: any) {
           new ZoneTask(eventTask, source, callback, data, customSchedule, customCancel));
     }
 
+
     cancelTask(task: Task): any {
       if (task.zone != this)
         throw new Error(
@@ -954,7 +913,6 @@ const Zone: ZoneType = (function(global: any) {
       } catch (err) {
         // if error occurs when cancelTask, transit the state to unknown
         (task as ZoneTask<any>)._transitionTo(unknown, canceling);
-        this._zoneDelegate.handleError(this, err);
         throw err;
       }
       this._updateTaskCount(task as ZoneTask<any>, -1);
@@ -1008,10 +966,6 @@ const Zone: ZoneType = (function(global: any) {
     private _invokeZS: ZoneSpec|null;
     private _invokeCurrZone: Zone|null;
 
-    private _handleErrorDlgt: ZoneDelegate|null;
-    private _handleErrorZS: ZoneSpec|null;
-    private _handleErrorCurrZone: Zone|null;
-
     private _scheduleTaskDlgt: ZoneDelegate|null;
     private _scheduleTaskZS: ZoneSpec|null;
     private _scheduleTaskCurrZone: Zone|null;
@@ -1051,13 +1005,6 @@ const Zone: ZoneType = (function(global: any) {
           zoneSpec && (zoneSpec.onInvoke ? parentDelegate ! : parentDelegate !._invokeDlgt);
       this._invokeCurrZone =
           zoneSpec && (zoneSpec.onInvoke ? this.zone : parentDelegate !._invokeCurrZone);
-
-      this._handleErrorZS =
-          zoneSpec && (zoneSpec.onHandleError ? zoneSpec : parentDelegate !._handleErrorZS);
-      this._handleErrorDlgt = zoneSpec &&
-          (zoneSpec.onHandleError ? parentDelegate ! : parentDelegate !._handleErrorDlgt);
-      this._handleErrorCurrZone =
-          zoneSpec && (zoneSpec.onHandleError ? this.zone : parentDelegate !._handleErrorCurrZone);
 
       this._scheduleTaskZS =
           zoneSpec && (zoneSpec.onScheduleTask ? zoneSpec : parentDelegate !._scheduleTaskZS);
@@ -1135,13 +1082,6 @@ const Zone: ZoneType = (function(global: any) {
           callback.apply(applyThis, applyArgs);
     }
 
-    handleError(targetZone: Zone, error: any): boolean {
-      return this._handleErrorZS ?
-          this._handleErrorZS.onHandleError !(
-              this._handleErrorDlgt !, this._handleErrorCurrZone !, targetZone, error) :
-          true;
-    }
-
     scheduleTask(targetZone: Zone, task: Task): Task {
       let returnTask: ZoneTask<any> = task as ZoneTask<any>;
       if (this._scheduleTaskZS) {
@@ -1195,7 +1135,7 @@ const Zone: ZoneType = (function(global: any) {
             this._hasTaskZS.onHasTask !(
                 this._hasTaskDlgt !, this._hasTaskCurrZone !, targetZone, isEmpty);
       } catch (err) {
-        this.handleError(targetZone, err);
+        // this.handleError(targetZone, err);
       }
     }
 

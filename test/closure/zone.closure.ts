@@ -30,11 +30,6 @@ const testClosureFunction = () => {
       return parentZoneDelegate.invoke(targetZone, delegate, applyThis, applyArgs, source);
     },
 
-    onHandleError: function(
-        parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, error: any) {
-      return parentZoneDelegate.handleError(targetZone, error);
-    },
-
     onScheduleTask: function(
         parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, task: Task) {
       return parentZoneDelegate.scheduleTask(targetZone, task);
@@ -58,7 +53,7 @@ const testClosureFunction = () => {
   };
 
   const testZone: Zone = Zone.current.fork(testZoneSpec);
-  testZone.runGuarded(() => {
+  testZone.run(() => {
     testZone.run(() => {
       const properties = testZoneSpec.properties;
       properties!['key'] = 'value';
@@ -96,7 +91,6 @@ const testClosureFunction = () => {
     'fork',
     'wrap',
     'run',
-    'runGuarded',
     'runTask',
     'scheduleTask',
     'scheduleMicroTask',
@@ -109,7 +103,6 @@ const testClosureFunction = () => {
     'onFork',
     'onIntercept',
     'onInvoke',
-    'onHandleError',
     'onScheduleTask',
     'onInvokeTask',
     'onCancelTask',

@@ -131,21 +131,6 @@ type LongStackTraceZoneSpec = ZoneSpec & {longStackTraceLimit: number};
     return parentZoneDelegate.scheduleTask(targetZone, task);
   },
 
-  onHandleError: function(
-      parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, error: any): boolean {
-    if (stackTracesEnabled()) {
-      const parentTask = Zone.currentTask || error.task;
-      if (error instanceof Error && parentTask) {
-        const longStack =
-            renderLongStackTrace(parentTask.data && parentTask.data[creationTrace], error.stack);
-        try {
-          error.stack = (error as any).longStack = longStack;
-        } catch (err) {
-        }
-      }
-    }
-    return parentZoneDelegate.handleError(targetZone, error);
-  }
 };
 
 function captureStackTraces(stackTraces: string[][], count: number): void {

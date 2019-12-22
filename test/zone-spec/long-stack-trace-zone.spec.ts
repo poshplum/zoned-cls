@@ -21,13 +21,6 @@ describe(
       beforeEach(function() {
         lstz = Zone.current.fork(longStackTraceZoneSpec).fork({
           name: 'long-stack-trace-zone-test',
-          onHandleError:
-              (parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, error: any):
-                  boolean => {
-                    parentZoneDelegate.handleError(targetZone, error);
-                    log.push(error);
-                    return false;
-                  }
         });
 
         log = [];
@@ -138,29 +131,8 @@ describe(
         });
       });
 
-      it('should produce long stack traces when has uncaught error in promise', function(done) {
-        lstz.runGuarded(function() {
-          setTimeout(function() {
-            setTimeout(function() {
-              let promise = new Promise(function(resolve, reject) {
-                setTimeout(function() {
-                  reject(new Error('Hello Promise'));
-                }, 0);
-              });
-              promise.then(function() {
-                fail('should not get here');
-              });
-              setTimeout(function() {
-                expectElapsed(log[0].stack!, 5);
-                done();
-              }, 0);
-            }, 0);
-          }, 0);
-        });
-      });
-
       it('should produce long stack traces when handling error in promise', function(done) {
-        lstz.runGuarded(function() {
+        lstz.run(function() {
           setTimeout(function() {
             setTimeout(function() {
               let promise = new Promise(function(resolve, reject) {

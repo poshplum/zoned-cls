@@ -121,24 +121,6 @@ describe('ProxySpec', () => {
       expect(proxyZone.run(fn)).toEqual('(works)');
     });
 
-    it('should handleError', () => {
-      const error = new Error('TestError');
-      const fn = () => {
-        throw error;
-      };
-      expect(() => proxyZone.run(fn)).toThrow(error);
-      proxyZoneSpec.setDelegate({
-        name: '.',
-        onHandleError:
-            (parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, error: any):
-                boolean => {
-                  expect(error).toEqual(error);
-                  return false;
-                }
-      });
-      expect(() => proxyZone.runGuarded(fn)).not.toThrow();
-    });
-
     it('should Task', () => {
       const fn = (): any => null;
       const task = proxyZone.scheduleMacroTask('test', fn, {}, () => null, () => null);

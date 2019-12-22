@@ -94,6 +94,6 @@ Zone.__load_patch('asynctest', (global: any, Zone: ZoneType, api: _ZonePrivate) 
       proxyZoneSpec.setDelegate(testZoneSpec);
       (testZoneSpec as any).patchPromiseForTest();
     });
-    return Zone.current.runGuarded(fn, context);
+    return Zone.current.run(fn, context);
   }
 });

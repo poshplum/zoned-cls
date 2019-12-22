@@ -130,15 +130,6 @@ class ProxyZoneSpec implements ZoneSpec {
     }
   }
 
-  onHandleError(parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, error: any):
-      boolean {
-    if (this._delegateSpec && this._delegateSpec.onHandleError) {
-      return this._delegateSpec.onHandleError(parentZoneDelegate, currentZone, targetZone, error);
-    } else {
-      return parentZoneDelegate.handleError(targetZone, error);
-    }
-  }
-
   onScheduleTask(parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, task: Task):
       Task {
     if (task.type !== 'eventTask') {

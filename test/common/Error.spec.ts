@@ -288,10 +288,10 @@ describe('ZoneAwareError', () => {
   });
 
   const zoneAwareFrames = [
-    'Zone.run', 'Zone.runGuarded', 'Zone.scheduleEventTask', 'Zone.scheduleMicroTask',
+    'Zone.run', 'Zone.scheduleEventTask', 'Zone.scheduleMicroTask',
     'Zone.scheduleMacroTask', 'Zone.runTask', 'ZoneDelegate.scheduleTask',
     'ZoneDelegate.invokeTask', 'zoneAwareAddListener', 'Zone.prototype.run',
-    'Zone.prototype.runGuarded', 'Zone.prototype.scheduleEventTask',
+    'Zone.prototype.scheduleEventTask',
     'Zone.prototype.scheduleMicroTask', 'Zone.prototype.scheduleMacroTask',
     'Zone.prototype.runTask', 'ZoneDelegate.prototype.scheduleTask',
     'ZoneDelegate.prototype.invokeTask', 'ZoneTask.invokeTask'
@@ -423,13 +423,6 @@ describe('ZoneAwareError', () => {
                             onScheduleTask: (parentDelegate, currentZone, targetZone, task) => {
                               return parentDelegate.scheduleTask(targetZone, task);
                             },
-                            onHandleError: (parentDelegate, currentZone, targetZone, error) => {
-                              parentDelegate.handleError(targetZone, error);
-                              const containsCustomZoneSpecStackTrace =
-                                  error.stack.indexOf('onScheduleTask') !== -1;
-                              expect(containsCustomZoneSpecStackTrace).toBeTruthy();
-                              return false;
-                            }
                           })
                           .scheduleEventTask('errorEvent', () => {
                             throw new Error('test error');

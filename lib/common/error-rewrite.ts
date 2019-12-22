@@ -249,14 +249,12 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
     return;
   }
   // Now we need to populate the `blacklistedStackFrames` as well as find the
-  // run/runGuarded/runTask frames. This is done by creating a detect zone and then threading
+  // run/runTask frames. This is done by creating a detect zone and then threading
   // the execution through all of the above methods so that we can look at the stack trace and
   // find the frames of interest.
 
-  let detectZone: Zone = Zone.current.fork({
-    name: 'detect',
-    onHandleError: function(
-        parentZD: ZoneDelegate, current: Zone, target: Zone, error: any): boolean {
+   const onHandleError =  function(
+      parentZD: ZoneDelegate, current: Zone, target: Zone, error: any): boolean {
       if (error.originalStack && Error === ZoneAwareError) {
         let frames = error.originalStack.split(/\n/);
         let runFrame = false, runGuardedFrame = false, runTaskFrame = false;
@@ -307,8 +305,10 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
         }
       }
       return false;
-    }
-  }) as Zone;
+    };
+    let detectZone: Zone = Zone.current.fork({
+      name: 'detect',
+    }) as Zone;
   // carefully constructor a stack frame which contains all of the frames of interest which
   // need to be detected and blacklisted.
 
@@ -338,7 +338,7 @@ Zone.__load_patch('Error', (global: any, Zone: ZoneType, api: _ZonePrivate) => {
   // when onSchedule, so we can get all stack traces for
   // all kinds of tasks with one error thrown.
   childDetectZone.run(() => {
-    childDetectZone.runGuarded(() => {
+    childDetectZone.run(() => {
       const fakeTransitionTo = () => {};
       childDetectZone.scheduleEventTask(
           blacklistedStackFramesSymbol,

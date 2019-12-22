@@ -683,14 +683,9 @@ describe('bluebird promise', () => {
     const logs: string[] = [];
     const zone = Zone.current.fork({
       name: 'testErrorHandling',
-      onHandleError: function() {
-        // should not get here
-        logs.push('onHandleError');
-        return true;
-      }
     });
 
-    zone.runGuarded(() => {
+    zone.run(() => {
       return BluebirdPromise.resolve()
           .then(() => {
             throw new Error('test error');
@@ -706,14 +701,9 @@ describe('bluebird promise', () => {
     const logs: string[] = [];
     const zone = Zone.current.fork({
       name: 'testErrorHandling',
-      onHandleError: function() {
-        // should not get here
-        logs.push('onHandleError');
-        return true;
-      }
     });
 
-    zone.runGuarded(() => {
+    zone.run(() => {
       return Promise.resolve()
           .then(() => {
             throw new Error('test error');
@@ -736,7 +726,7 @@ describe('bluebird promise', () => {
       }
     });
 
-    zone.runGuarded(() => {
+    zone.run(() => {
       return BluebirdPromise.reject().catch(() => {
         expect(logs).toEqual([]);
         done();
@@ -748,14 +738,9 @@ describe('bluebird promise', () => {
     const logs: string[] = [];
     const zone = Zone.current.fork({
       name: 'testErrorHandling',
-      onHandleError: function() {
-        // should not get here
-        logs.push('onHandleError');
-        return true;
-      }
     });
 
-    zone.runGuarded(() => {
+    zone.run(() => {
       return Promise.reject(new Error('reject')).catch(() => {
         expect(logs).toEqual([]);
         done();
@@ -763,33 +748,4 @@ describe('bluebird promise', () => {
     });
   });
 
-  it('should trigger onHandleError when unhandledRejection', (done: DoneFn) => {
-    const zone = Zone.current.fork({
-      name: 'testErrorHandling',
-      onHandleError: function() {
-        setTimeout(done, 100);
-        return true;
-      }
-    });
-
-    zone.runGuarded(() => {
-      return Promise.reject(new Error('reject'));
-    });
-  });
-
-  it('should trigger onHandleError when unhandledRejection in chained Promise', (done: DoneFn) => {
-    const zone = Zone.current.fork({
-      name: 'testErrorHandling',
-      onHandleError: function() {
-        setTimeout(done, 100);
-        return true;
-      }
-    });
-
-    zone.runGuarded(() => {
-      return Promise.resolve().then(() => {
-        throw new Error('test');
-      });
-    });
-  });
 });

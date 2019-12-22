@@ -112,15 +112,6 @@
                     }
                 }
             };
-            AsyncTestZoneSpec.prototype.onHandleError = function (parentZoneDelegate, currentZone, targetZone, error) {
-                // Let the parent try to handle the error.
-                var result = parentZoneDelegate.handleError(targetZone, error);
-                if (result) {
-                    this.failCallback(error);
-                    this._alreadyErrored = true;
-                }
-                return false;
-            };
             AsyncTestZoneSpec.prototype.onHasTask = function (delegate, current, target, hasTaskState) {
                 delegate.hasTask(target, hasTaskState);
                 if (hasTaskState.change == 'microTask') {

@@ -230,33 +230,6 @@ describe('AsyncTestZoneSpec', function() {
                  req.send();
                });
              });
-
-             it('should fail if an xhr fails', function(done) {
-               let req: XMLHttpRequest;
-
-               const testZoneSpec = new AsyncTestZoneSpec(
-                   () => {
-                     done.fail('expected failCallback to be called');
-                   },
-                   (err: Error) => {
-                     expect(err.message).toEqual('bad url failure');
-                     done();
-                   },
-                   'name');
-
-               const atz = Zone.current.fork(testZoneSpec);
-
-               atz.run(function() {
-                 req = new XMLHttpRequest();
-                 req.onload = () => {
-                   if (req.status != 200) {
-                     throw new Error('bad url failure');
-                   }
-                 };
-                 req.open('get', '/bad-url', true);
-                 req.send();
-               });
-             });
            }));
 
   it('should not fail if setInterval is used and canceled', (done) => {
@@ -278,43 +251,6 @@ describe('AsyncTestZoneSpec', function() {
     });
   });
 
-  it('should fail if an error is thrown asynchronously', (done) => {
-    const testZoneSpec = new AsyncTestZoneSpec(
-        () => {
-          done.fail('expected failCallback to be called');
-        },
-        (err: Error) => {
-          expect(err.message).toEqual('my error');
-          done();
-        },
-        'name');
-
-    const atz = Zone.current.fork(testZoneSpec);
-
-    atz.run(function() {
-      setTimeout(() => {
-        throw new Error('my error');
-      }, 10);
-    });
-  });
-
-  it('should fail if a promise rejection is unhandled', (done) => {
-    const testZoneSpec = new AsyncTestZoneSpec(
-        () => {
-          done.fail('expected failCallback to be called');
-        },
-        (err: Error) => {
-          expect(err.message).toEqual('Uncaught (in promise): my reason');
-          done();
-        },
-        'name');
-
-    const atz = Zone.current.fork(testZoneSpec);
-
-    atz.run(function() {
-      Promise.reject('my reason');
-    });
-  });
 
   const asyncTest: any = (Zone as any)[Zone.__symbol__('asyncTest')];
 
@@ -509,6 +445,7 @@ describe('AsyncTestZoneSpec', function() {
           logs.push('beforeEach');
         }, 100);
       }));
+
 
       afterEach(wrapAsyncTest(() => {
         setTimeout(() => {

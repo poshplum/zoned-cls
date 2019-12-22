@@ -119,18 +119,6 @@
       }
     }
 
-    onHandleError(
-        parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone,
-        error: any): boolean {
-      // Let the parent try to handle the error.
-      const result = parentZoneDelegate.handleError(targetZone, error);
-      if (result) {
-        this.failCallback(error);
-        this._alreadyErrored = true;
-      }
-      return false;
-    }
-
     onHasTask(delegate: ZoneDelegate, current: Zone, target: Zone, hasTaskState: HasTaskState) {
       delegate.hasTask(target, hasTaskState);
       if (hasTaskState.change == 'microTask') {

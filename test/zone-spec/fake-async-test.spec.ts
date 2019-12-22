@@ -385,62 +385,6 @@ describe('FakeAsyncTestZoneSpec', () => {
         ]);
       });
     });
-
-    it('should throw the exception from tick for error thrown in timer callback', () => {
-      fakeAsyncTestZone.run(() => {
-        setTimeout(() => {
-          throw new Error('timer');
-        }, 10);
-        expect(() => {
-          testZoneSpec.tick(10);
-        }).toThrowError('timer');
-      });
-      // There should be no pending timers after the error in timer callback.
-      expect(testZoneSpec.pendingTimers.length).toBe(0);
-    });
-
-    it('should throw the exception from tick for error thrown in periodic timer callback', () => {
-      fakeAsyncTestZone.run(() => {
-        let count = 0;
-        setInterval(() => {
-          count++;
-          throw new Error(count.toString());
-        }, 10);
-
-        expect(() => {
-          testZoneSpec.tick(10);
-        }).toThrowError('1');
-
-        // Periodic timer is cancelled on first error.
-        expect(count).toBe(1);
-        testZoneSpec.tick(10);
-        expect(count).toBe(1);
-      });
-      // Periodic timer is removed from pending queue on error.
-      expect(testZoneSpec.pendingPeriodicTimers.length).toBe(0);
-    });
-  });
-
-  it('should be able to resume processing timer callbacks after handling an error', () => {
-    fakeAsyncTestZone.run(() => {
-      let ran = false;
-      setTimeout(() => {
-        throw new Error('timer');
-      }, 10);
-      setTimeout(() => {
-        ran = true;
-      }, 10);
-      expect(() => {
-        testZoneSpec.tick(10);
-      }).toThrowError('timer');
-      expect(ran).toBe(false);
-
-      // Restart timer queue processing.
-      testZoneSpec.tick(0);
-      expect(ran).toBe(true);
-    });
-    // There should be no pending timers after the error in timer callback.
-    expect(testZoneSpec.pendingTimers.length).toBe(0);
   });
 
   describe('flushing all tasks', () => {
@@ -549,19 +493,6 @@ describe('FakeAsyncTestZoneSpec', () => {
         expect(log).toEqual(
             ['microtask', 'periodic timer', 'pt microtask', 'timer', 't microtask']);
       });
-    });
-
-    it('should throw the exception from tick for error thrown in timer callback', () => {
-      fakeAsyncTestZone.run(() => {
-        setTimeout(() => {
-          throw new Error('timer');
-        }, 10);
-        expect(() => {
-          testZoneSpec.flush();
-        }).toThrowError('timer');
-      });
-      // There should be no pending timers after the error in timer callback.
-      expect(testZoneSpec.pendingTimers.length).toBe(0);
     });
 
     it('should do something reasonable with polling timeouts', () => {

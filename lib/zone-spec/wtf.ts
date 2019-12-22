@@ -78,12 +78,6 @@
     }
 
 
-    onHandleError(
-        parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone,
-        error: any): boolean {
-      return parentZoneDelegate.handleError(targetZone, error);
-    }
-
     onScheduleTask(
         parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, task: Task): any {
       const key = task.type + ':' + task.source;
