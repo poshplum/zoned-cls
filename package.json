@@ -1,11 +1,11 @@
 {
-  "name": "zoned-cls",
-  "version": "0.11.0",
+  "name": "@poshplum/zoned-cls",
+  "version": "1.0.0",
   "description": "Zoned continuation-local storage for browser and node",
   "main": "dist/zoned-cls-node.js",
   "browser": "dist/zoned-cls.js",
   "unpkg": "dist/zoned-cls.js",
-  "typings": "dist/zoned-cls.d.ts",
+  "types": "dist/zoned-cls.d.ts",
   "files": [
     "lib",
     "dist"
